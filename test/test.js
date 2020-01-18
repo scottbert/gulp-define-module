@@ -4,9 +4,9 @@ var defineModule = require('../');
 var gutil = require('gulp-util');
 var path = require('path');
 var fs = require('fs');
+var should = require('should');
 
 require('mocha');
-require('should');
 
 var fixtureFile = function(filePath) {
   var fixturesDir = path.join('test', 'fixtures');
@@ -34,6 +34,7 @@ var fileShouldMatchExpected = function(file, filePath) {
   if (fs.existsSync(expectedPath + '.regex')) {
     var regex = new RegExp(fs.readFileSync(expectedPath + '.regex').toString());
     var match = file.contents.toString().match(regex);
+    should.exist(match);
     if (typeof arguments[2] === 'function') {
       arguments[2](match);
     }
