@@ -34,7 +34,6 @@ var fileShouldMatchExpected = function(file, filePath) {
   if (fs.existsSync(expectedPath + '.regex')) {
     var regex = new RegExp(fs.readFileSync(expectedPath + '.regex').toString());
     var match = file.contents.toString().match(regex);
-    match.should.exist;
     if (typeof arguments[2] === 'function') {
       arguments[2](match);
     }
