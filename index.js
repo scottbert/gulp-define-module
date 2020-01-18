@@ -73,10 +73,10 @@ module.exports = function(type, options) {
 
     var opts = _.defaults({}, options, file.defineModuleOptions);
     opts.context = _([file.defineModuleOptions, options])
-      .filter(_.identity).pluck('context')
+      .filter(_.identity).map('context')
       .filter(_.identity).value();
     opts.require = _.merge.apply(null, _([file.defineModuleOptions, options, { require: {} }])
-      .filter(_.identity).pluck('require')
+      .filter(_.identity).map('require')
       .filter(_.identity).value());
 
     var contents = file.contents.toString();
@@ -94,7 +94,7 @@ module.exports = function(type, options) {
         }
         _.merge(context, _(extensions).map(function(value, key) {
           return [key, _.template(value)(context)];
-        }).object().value());
+        }).fromPairs().value());
       });
 
       contents = _.template(opts.wrapper)(context);
@@ -110,7 +110,7 @@ module.exports = function(type, options) {
     }
 
     file.path = gutil.replaceExtension(file.path, '.js');
-    file.contents = new Buffer(contents);
+    file.contents = new Buffer.from(contents);
     this.queue(file);
   });
 };
